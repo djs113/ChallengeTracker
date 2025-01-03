@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import ChallengeCreation from "./pages/ChallengeCreation";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <main className="flex-grow p-4">
             <Routes>
               <Route path="/" element={<Home />} />
+               <Route path="/create-challenge" element={<ChallengeCreation />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

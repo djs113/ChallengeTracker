@@ -14,6 +14,12 @@ const Sidebar = () => {
                 <li>
                     <Link to="/dashboard" className="text-blue-500">Dashboard</Link>
                 </li>
+                <li>
+                    <Link to="/create-challenge" className="text-blue-500">
+                        Create Challenge
+                    </Link>
+                </li>
+
             </u1>
         </nav>
     );
