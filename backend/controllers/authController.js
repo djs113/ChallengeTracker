@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const jwt = require('jwt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const dotenv = require('dotenv'); // To load JWT secret from .env
 
