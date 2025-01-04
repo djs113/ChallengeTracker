@@ -4,7 +4,9 @@
   "description": "ChallengeTracker is an app designed to help users set, track, and achieve personal challenges. Whether it’s fitness goals, learning milestones, or productivity targets, ChallengeTracker provides the tools to monitor progress and stay motivated.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
