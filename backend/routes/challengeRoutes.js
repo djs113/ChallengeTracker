@@ -3,6 +3,8 @@ const router = express.Router();
 const { createChallenge, getChallenges } = require("../controllers/challengeController");
 const { protect } = require("../middleware/authMiddleware");
 
-router.route("/").post(protect, createChallenge).get(getChallenges);
+router.post('/createChallenge', protect, createChallenge);
+
+router.get('/getChallenges', getChallenges);
 
 module.exports = router;
