@@ -8,7 +8,7 @@ const ChallengeCreation = () => {
     startDate: "",
     endDate: "",
     goal: "",
-    duration: "",
+    duration: 0,
     difficultyLevel: "",
   });
 
@@ -27,10 +27,17 @@ const ChallengeCreation = () => {
     setSuccess(null);
     setError(null);
 
+    const token = localStorage.getItem("token");
+
     try {
-      const response = await axios.post("http://localhost:5000/api/challenges", formData);
+      
+      await axios.post("http://localhost:5000/api/challenges/createChallenge", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setSuccess("Challenge created successfully!");
-      setFormData({ title: "", description: "", startDate: "", endDate: "", goal: "", duration: "", difficultyLevel: ""});
+      setFormData({ title: "", description: "", startDate: "", endDate: "", goal: "", duration: 0, difficultyLevel: ""});
     } catch (err) {
       setError("Failed to create challenge. Please try again.");
     } finally {
@@ -97,18 +104,7 @@ const ChallengeCreation = () => {
                 placeholder="e.g., Run 50 km in a month"
             />
         </div>
-        <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Duration (in days)</label>
-            <input
-                type="number"
-                name="duration"
-                value={formData.duration}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border rounded"
-                placeholder="e.g., 30"
-            />
-        </div>
+        
         <div className="mb-4">
             <label className="block text-gray-700 mb-2">Difficulty Level</label>
             <select

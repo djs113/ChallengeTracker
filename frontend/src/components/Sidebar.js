@@ -18,13 +18,15 @@ const Sidebar = () => {
                 <li>
                     <Link to="/dashboard" className="text-blue-500">Dashboard</Link>
                 </li>
-                <li>
-                    <Link to="/create-challenge" className="text-blue-500">Create Challenge</Link>
-                </li>
                 {isLoggedIn ? (
-                    <li>
-                        <Link to="/logout" className="text-blue-500">Logout</Link>
-                    </li>
+                    <>
+                        <li>
+                            <Link to="/logout" className="text-blue-500">Logout</Link>
+                        </li>
+                        <li>
+                            <Link to="/create-challenge" className="text-blue-500">Create Challenge</Link>
+                        </li>
+                    </>
                 ) : (
                     <>
                         <li>
