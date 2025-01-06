@@ -9,9 +9,11 @@ import ChallengeCreation from "./pages/ChallengeCreation";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import LogoutPage from "./pages/LogoutPage";
+import ChallengeDetailsPage from "./pages/ChallengeDetailsPage";
 
 // Import AuthProvider
 import { AuthProvider } from "./context/AuthContext";  
+import ChallengeList from "./components/ChallengeList";
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/logout" element={<LogoutPage />} />
+                <Route path="/get-challenges" element={<ChallengeList />} />
+                <Route path="/challenges/:id" element={<ChallengeDetailsPage />} />
               </Routes>
             </main>
           </div>
