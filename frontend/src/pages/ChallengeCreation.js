@@ -10,7 +10,7 @@ const ChallengeCreation = () => {
     goal: "",
     duration: 0,
     difficultyLevel: "",
-    progressTracking: "",
+    progressTracking: "Manual",
     progress: 0
   });
 
@@ -39,7 +39,7 @@ const ChallengeCreation = () => {
         },
       });
       setSuccess("Challenge created successfully!");
-      setFormData({ title: "", description: "", startDate: "", endDate: "", goal: "", duration: 0, difficultyLevel: "", progressTracking: ""});
+      setFormData({ title: "", description: "", startDate: "", endDate: "", goal: "", duration: 0, difficultyLevel: "", progressTracking: "Manual"});
     } catch (err) {
       setError("Failed to create challenge. Please try again.");
     } finally {
@@ -105,20 +105,6 @@ const ChallengeCreation = () => {
                 className="w-full p-2 border rounded"
                 placeholder="e.g., Run 50 km in a month"
             />
-        </div>
-        <div className="mb-4">
-            <label className="block text-gray-700 mb-2">Progress Tracking</label>
-            <select
-                name="progressTracking"
-                value={formData.progressTracking}
-                onChange={handleChange}
-                required
-                className="w-full p-2 border rounded bg-white"
-            >
-                <option value="">Select Method</option>
-                <option value="Manual">Manual</option>
-                <option value="Automatic">Automatic</option>
-            </select>
         </div>
         <div className="mb-4">
             <label className="block text-gray-700 mb-2">Difficulty Level</label>

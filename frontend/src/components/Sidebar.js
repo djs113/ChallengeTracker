@@ -12,9 +12,6 @@ const Sidebar = () => {
                 <li>
                     <Link to="/" className="text-blue-500">Home</Link>
                 </li>
-                <li>
-                    <Link to="/challenges" className="text-blue-500">Challenges</Link>
-                </li>
                 {isLoggedIn ? (
                     <>
                         <li>
