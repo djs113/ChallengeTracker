@@ -7,6 +7,7 @@ const ChallengeSchema = new mongoose.Schema({
   endDate: { type: Date, required: true },
   goal: { type: String, required: true },
   duration: { type: Number, required: true },
+  progress: { type: Number, required: true },
   difficultyLevel: { type: String, enum: ["Easy", "Medium", "Hard"], required: true },
   createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });

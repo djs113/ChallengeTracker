@@ -21,3 +21,44 @@ exports.getChallenges = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+exports.getChallengeById = async (req, res) => {
+   try {
+    const challenge = await Challenge.findById(req.params.id);
+    if (!challenge) {
+      return res.status(404).json({ message: "Challenge not found" });
+    }
+    res.status(200).json(challenge);
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.updateChallengeProgress = async (req, res) => {
+  const challenge = await Challenge.findById(req.params.id);
+
+  if (!challenge) {
+    res.status(404);
+    throw new Error("Challenge not found");
+  }
+
+  // Increment progress by 1 day
+  if (challenge.progress >= challenge.duration) {
+    return res.status(200).json({ message: "Challenge already completed" });
+  }
+  challenge.progress = challenge.progress + 1;
+  await challenge.save();
+
+  res.status(200).json(challenge);
+};
+
+exports.deleteChallenge = async (req, res) => {
+  const challenge = await Challenge.findByIdAndDelete(req.params.id);
+
+  if (!challenge) {
+    res.status(404);
+    throw new Error("Challenge not found");
+  }
+  
+  res.status(200).json({ message: "Challenge removed successfully" });
+};
