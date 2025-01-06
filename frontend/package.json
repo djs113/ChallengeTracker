@@ -5,6 +5,7 @@
   "dependencies": {
     "autoprefixer": "^10.4.20",
     "axios": "^1.7.9",
+    "cors": "^2.8.5",
     "cra-template": "1.2.0",
     "frontend1": "file:",
     "postcss": "^8.4.49",
