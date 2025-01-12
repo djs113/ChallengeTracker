@@ -6,19 +6,7 @@ const ChallengeDetailsPage = () => {
   const { id } = useParams(); // Get the challenge ID from the URL
   const [challenge, setChallenge] = useState(null);
   const [progress, setProgress] = useState(0);
-
-  const incrementProgress = async () => {
-    try {
-      const response = await API.put(`/challenges/${id}/progress`);
-      if (response.data.message) {
-        alert(response.data.message);
-      } else {
-        setProgress(response.data.progress);
-      }      
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [loading, setLoading] = useState(true);
 
   const deleteChallenge = async () => {
     try {
@@ -36,19 +24,43 @@ const ChallengeDetailsPage = () => {
         const response = await API.get(`/challenges/${id}`);
         setChallenge(response.data);
         setProgress(response.data.progress);
-        
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching challenge:", error);
+        setLoading(false);
       }
     };
 
     fetchChallenge();
   }, [id]);
 
+  if (loading) return <p>Loading...</p>;
   if (!challenge) {
     return <p>Loading...</p>;
   }
   
+  // Calculate progress percentage
+  const progressPercentage = Math.min(
+    (progress / challenge.duration) * 100,
+    100
+  );
+
+  const incrementProgress = async () => {
+    const updatedProgress = progress + 1;
+
+    try {
+      const response = await API.put(`/challenges/${id}/progress`);
+      if (response.data.message) {
+        alert(response.data.message);
+      } else {
+        setProgress(response.data.progress);
+        setChallenge(response.data);
+      }      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
     <div className="p-4">
@@ -59,6 +71,15 @@ const ChallengeDetailsPage = () => {
       <p><strong>Goal:</strong> {challenge.goal}</p>
       <p><strong>Difficulty Level:</strong> {challenge.difficultyLevel}</p>
       <p><strong>Progress:</strong> {progress} / {challenge.duration}</p>
+    </div>
+    {/* Progress Bar */}
+    <div className="w-full bg-gray-300 rounded-full h-6 overflow-hidden">
+      <div
+        className="bg-blue-500 h-full text-center text-white"
+        style={{ width: `${progressPercentage}%` }}
+      >
+        {progressPercentage.toFixed(1)}%
+      </div>
     </div>
     <button
           onClick={incrementProgress}
