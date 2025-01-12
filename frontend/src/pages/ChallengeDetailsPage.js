@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import API from "../utils/api";
+import { useNavigate } from "react-router-dom";
 
 const ChallengeDetailsPage = () => {
   const { id } = useParams(); // Get the challenge ID from the URL
   const [challenge, setChallenge] = useState(null);
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const deleteChallenge = async () => {
     try {
       const response = await API.delete(`/challenges/deleteChallenge/${id}`);
-      if (response.data.message) 
-        alert(response.data.message);   
+      if (response.data.message) {
+        alert(response.data.message);
+        navigate("/get-challenges");
+      }   
     } catch (error) {
       console.error(error);
     }
@@ -46,8 +50,6 @@ const ChallengeDetailsPage = () => {
   );
 
   const incrementProgress = async () => {
-    const updatedProgress = progress + 1;
-
     try {
       const response = await API.put(`/challenges/${id}/progress`);
       if (response.data.message) {
