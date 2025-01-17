@@ -83,18 +83,26 @@ const ChallengeDetailsPage = () => {
         {progressPercentage.toFixed(1)}%
       </div>
     </div>
+    { challenge.progressTracking === "Manual" ? (
+      <>
+        <button
+            onClick={incrementProgress}
+            className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mr-4"
+          >
+            Increase Progress by 1 Day
+      </button>
+    </>
+    ) : (
+      null
+    )}
+    
     <button
-          onClick={incrementProgress}
-          className="mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 mr-4"
-        >
-          Increase Progress by 1 Day
-    </button>
-    <button
-          onClick={deleteChallenge}
-          className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-        >
-          Delete Challenge
-    </button>
+            onClick={deleteChallenge}
+            className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+          >
+            Delete Challenge
+      </button>
+    
     </>
   );
 };

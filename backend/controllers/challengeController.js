@@ -28,6 +28,22 @@ exports.getChallengeById = async (req, res) => {
     if (!challenge) {
       return res.status(404).json({ message: "Challenge not found" });
     }
+
+    if (challenge.progressTracking == "Automatic") {
+      const today = new Date();
+      const startDate = new Date(challenge.startDate);
+
+      const differenceInTime = today.getTime() - startDate.getTime();
+      const differenceInDays = Math.trunc(differenceInTime / (1000 * 3600 * 24));
+
+      if (differenceInDays > 0) {
+        if (differenceInDays <= challenge.duration) {
+          challenge.progress = differenceInDays;
+          await challenge.save();
+        }
+      }
+    }
+    
     res.status(200).json(challenge);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
