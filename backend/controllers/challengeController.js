@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+const dotenv = require('dotenv');
+
 const Challenge = require("../models/Challenge");
 
 exports.createChallenge = async (req, res) => {
@@ -6,7 +9,10 @@ exports.createChallenge = async (req, res) => {
     const end = new Date(req.body.endDate);
     const duration = (end - start) / (1000 * 60 * 60 * 24);
 
-    const challenge = await Challenge.create({ ...req.body, duration }); //createdBy: req.user.id });
+    const decoded = jwt.verify(req.body.userId, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    const challenge = await Challenge.create({ ...req.body, duration, userId });
     res.status(201).json({ success: true, data: challenge });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });

@@ -23,7 +23,11 @@ const ChallengeCreation = () => {
 
     // Date validation
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     const startDate = new Date(formData.startDate);
+    startDate.setHours(0, 0, 0, 0);
+
     const endDate = new Date(formData.endDate);
 
     if (!formData.startDate) {
@@ -65,7 +69,7 @@ const ChallengeCreation = () => {
 
     try {
       
-      await axios.post("http://localhost:5000/api/challenges/createChallenge", { ...formData, progress: 0 }, {
+      await axios.post("http://localhost:5000/api/challenges/createChallenge", { ...formData, progress: 0, userId: token }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

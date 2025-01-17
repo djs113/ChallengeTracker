@@ -10,7 +10,7 @@ const ChallengeSchema = new mongoose.Schema({
   progress: { type: Number, required: true },
   progressTracking: { type: String, enum: ["Automatic", "Manual"], required: true },
   difficultyLevel: { type: String, enum: ["Easy", "Medium", "Hard"], required: true },
-  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  userId: { type: String, required: true },
 });
 
 module.exports = mongoose.model("Challenge", ChallengeSchema);
