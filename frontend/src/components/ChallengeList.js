@@ -5,11 +5,16 @@ import { Link } from "react-router-dom";
 
 const ChallengeList = () => {
   const [challenges, setChallenges] = useState([]);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
-        const response = await API.get("/challenges/getChallenges");
+        const response = await API.get("/challenges/getChallenges", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
         setChallenges(response.data.data);
       } catch (error) {
         console.error("Error fetching challenges:", error);

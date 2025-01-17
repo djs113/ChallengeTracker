@@ -21,7 +21,11 @@ exports.createChallenge = async (req, res) => {
 
 exports.getChallenges = async (req, res) => {
   try {
-    const challenges = await Challenge.find();
+    const authHeader = req.headers['authorization'];
+    const token = authHeader.split(" ")[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+    const challenges = await Challenge.find({ userId });
     res.json({ success: true, data: challenges });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
