@@ -10,6 +10,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import LogoutPage from "./pages/LogoutPage";
 import ChallengeDetailsPage from "./pages/ChallengeDetailsPage";
+import JoinChallengesPage from "./pages/JoinChallengesPage";
 
 // Import AuthProvider
 import { AuthProvider } from "./context/AuthContext";  
@@ -19,6 +20,7 @@ function App() {
   return (
     <AuthProvider> 
       <Router>
+        <Home />
         <div className="flex flex-col h-screen">
           <Header />
           <div className="flex flex-grow">
@@ -33,6 +35,7 @@ function App() {
                 <Route path="/logout" element={<LogoutPage />} />
                 <Route path="/get-challenges" element={<ChallengeList />} />
                 <Route path="/challenges/:id" element={<ChallengeDetailsPage />} />
+                <Route path="/challenges/getAvailableChallenges" element={<JoinChallengesPage />} />
               </Routes>
             </main>
           </div>

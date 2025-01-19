@@ -26,6 +26,10 @@ const Sidebar = () => {
                         <li>
                             <Link to="/get-challenges" className="text-blue-500">Show Challenges</Link>
                         </li>
+                        <li>
+                            <Link to="/challenges/getAvailableChallenges" className="text-blue-500">Join Challenges</Link>
+                        </li>
+                        
                     </>
                 ) : (
                     <>
