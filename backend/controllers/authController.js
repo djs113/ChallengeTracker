@@ -59,6 +59,8 @@ const loginUser = async (req, res) => {
             return res.status(401).json({ message: 'Incorrect password' });
         }
 
+        req.session.userId = user._id;
+        
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
             expiresIn: '1h',
         });
@@ -87,8 +89,25 @@ const getUserProfile = async (req, res) => {
     }
 };
 
+const verifyToken = async (req, res) => {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ success: false, message: "No token provided" });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        res.json({ success: true, user: decoded });
+    } catch (err) {
+        res.status(403).json({ success: false, message: "Invalid or expired token" });
+    }
+};
+
 module.exports = {
     registerUser,
     loginUser,
     getUserProfile,
+    verifyToken,
 };

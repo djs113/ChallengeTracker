@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
@@ -12,15 +12,15 @@ import LogoutPage from "./pages/LogoutPage";
 import ChallengeDetailsPage from "./pages/ChallengeDetailsPage";
 import JoinChallengesPage from "./pages/JoinChallengesPage";
 
+
 // Import AuthProvider
 import { AuthProvider } from "./context/AuthContext";  
 import ChallengeList from "./components/ChallengeList";
 
-function App() {
+function App() { // Run only once on page load
   return (
     <AuthProvider> 
       <Router>
-        <Home />
         <div className="flex flex-col h-screen">
           <Header />
           <div className="flex flex-grow">

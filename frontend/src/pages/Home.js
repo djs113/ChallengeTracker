@@ -1,11 +1,41 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "owl.carousel/dist/assets/owl.carousel.css"; // Bootstrap CSS
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import AuthContext from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import API from "../utils/api";
 
 const Home = () => {
-  const { isLoggedIn } = useContext(AuthContext);
+  // const { isLoggedIn } = useContext(AuthContext);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const navigate = useNavigate();
+
+   useEffect(() => {
+    const verifyToken = async () => {
+      const token = localStorage.getItem("token");
+      console.log('true');
+      if (token) {
+        try {
+          const response = await API.get("/auth/verifyToken", {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+
+          if (response.data.success) 
+            setIsLoggedIn(true);
+          else 
+            setIsLoggedIn(false);
+          
+        } catch (error) {
+          // navigate('/logout');
+        }
+      } else {
+        setIsLoggedIn(false);
+        return;
+      }
+    };
+
+    verifyToken();
+  }, []);
 
   return (
     <>
@@ -17,7 +47,7 @@ const Home = () => {
       <header class="header_section">
         <nav class="navbar navbar-expand-lg custom_nav-container " >
             <a class="navbar-brand" href="index.html">
-              <span>
+              <span style={{ marginLeft: "25px",}}>
                 ChallengeTracker
               </span>
             </a>
@@ -34,7 +64,7 @@ const Home = () => {
                     <a class="nav-link" href="trainer.html"> trainers</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="contact.html"> Contact Us</a>
+                    <a class="nav-link" href="/logout"> Logout</a>
                   </li>
                 </>
               ) : (
@@ -73,7 +103,88 @@ const Home = () => {
                         Training
                       </h2>
                       <h1>
-                        Neogym
+                        ChallengeTracker
+                      </h1>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse .
+                      </p>
+                      <div class="">
+                        <a href="/create-challenge">
+                          Create Challenge
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="container">
+                <div class="col-lg-10 col-md-11 mx-auto">
+                  <div class="detail-box">
+                    <div>
+                      <h3>
+                        Fitness
+                      </h3>
+                      <h2>
+                        Training
+                      </h2>
+                      <h1>
+                        ChallengeTracker
+                      </h1>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse .
+                      </p>
+                      <div class="">
+                        <a href="/get-challenges">
+                          Get Challenges
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="container">
+                <div class="col-lg-10 col-md-11 mx-auto">
+                  <div class="detail-box">
+                    <div>
+                      <h3>
+                        Fitness
+                      </h3>
+                      <h2>
+                        Training
+                      </h2>
+                      <h1>
+                        ChallengeTracker
+                      </h1>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse .
+                      </p>
+                      <div class="">
+                        <a href="/challenges/getAvailableChallenges">
+                          Join Challenges
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="container">
+                <div class="col-lg-10 col-md-11 mx-auto">
+                  <div class="detail-box">
+                    <div>
+                      <h3>
+                        Fitness
+                      </h3>
+                      <h2>
+                        Training
+                      </h2>
+                      <h1>
+                        ChallengeTracker
                       </h1>
                       <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse .
@@ -100,88 +211,7 @@ const Home = () => {
                         Training
                       </h2>
                       <h1>
-                        Neogym
-                      </h1>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse .
-                      </p>
-                      <div class="">
-                        <a href="">
-                          Contact Us
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="container">
-                <div class="col-lg-10 col-md-11 mx-auto">
-                  <div class="detail-box">
-                    <div>
-                      <h3>
-                        Fitness
-                      </h3>
-                      <h2>
-                        Training
-                      </h2>
-                      <h1>
-                        Neogym
-                      </h1>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse .
-                      </p>
-                      <div class="">
-                        <a href="">
-                          Contact Us
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="container">
-                <div class="col-lg-10 col-md-11 mx-auto">
-                  <div class="detail-box">
-                    <div>
-                      <h3>
-                        Fitness
-                      </h3>
-                      <h2>
-                        Training
-                      </h2>
-                      <h1>
-                        Neogym
-                      </h1>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse .
-                      </p>
-                      <div class="">
-                        <a href="">
-                          Contact Us
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="container">
-                <div class="col-lg-10 col-md-11 mx-auto">
-                  <div class="detail-box">
-                    <div>
-                      <h3>
-                        Fitness
-                      </h3>
-                      <h2>
-                        Training
-                      </h2>
-                      <h1>
-                        Neogym
+                        ChallengeTracker
                       </h1>
                       <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse .

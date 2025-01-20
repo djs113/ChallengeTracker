@@ -5,7 +5,6 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -21,7 +20,6 @@ export const AuthProvider = ({ children }) => {
       const { data } = await API.post("/auth/login", { email, password });
       localStorage.setItem("token", data.token);
       setUser(data.user);
-      setIsLoggedIn(true);
       alert("Login successful!");
       navigate("/");
     } catch (error) {
@@ -61,12 +59,12 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("isLoggedIn");
     setUser(null);
-    setIsLoggedIn(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

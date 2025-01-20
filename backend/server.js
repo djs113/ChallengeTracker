@@ -3,6 +3,24 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const cors = require('cors');
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET, // Replace with a strong secret
+    resave: false, // Avoid resaving session data if not modified
+    saveUninitialized: false, // Only save sessions when initialized
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI, // MongoDB connection string
+    }),
+    cookie: {
+      secure: process.env.NODE_ENV === "production", // Secure cookies in production
+      httpOnly: true, // Prevent client-side JavaScript from accessing cookies
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
+  })
+);
 
 // Initialize environment variables
 dotenv.config();
