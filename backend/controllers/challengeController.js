@@ -1,4 +1,14 @@
+const jwt = require("jsonwebtoken");
+const dotenv = require('dotenv');
+
 const Challenge = require("../models/Challenge");
+
+const getUserId = (req) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  return decoded.userId;
+};
 
 exports.createChallenge = async (req, res) => {
   try {
@@ -6,7 +16,10 @@ exports.createChallenge = async (req, res) => {
     const end = new Date(req.body.endDate);
     const duration = (end - start) / (1000 * 60 * 60 * 24);
 
-    const challenge = await Challenge.create({ ...req.body, duration }); //createdBy: req.user.id });
+    const decoded = jwt.verify(req.body.userId, process.env.JWT_SECRET);
+    const userId = decoded.userId;
+
+    const challenge = await Challenge.create({ ...req.body, duration, userId });
     res.status(201).json({ success: true, data: challenge });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -15,7 +28,8 @@ exports.createChallenge = async (req, res) => {
 
 exports.getChallenges = async (req, res) => {
   try {
-    const challenges = await Challenge.find();
+    const userId = getUserId(req);
+    const challenges = await Challenge.find({ userId });
     res.json({ success: true, data: challenges });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -28,9 +42,73 @@ exports.getChallengeById = async (req, res) => {
     if (!challenge) {
       return res.status(404).json({ message: "Challenge not found" });
     }
+
+    if (challenge.progressTracking == "Automatic") {
+      const today = new Date();
+      const startDate = new Date(challenge.startDate);
+
+      const differenceInTime = today.getTime() - startDate.getTime();
+      const differenceInDays = Math.trunc(differenceInTime / (1000 * 3600 * 24));
+
+      if (differenceInDays > 0) {
+        if (differenceInDays <= challenge.duration) {
+          challenge.progress = differenceInDays;
+          await challenge.save();
+        }
+      }
+    }
+    
     res.status(200).json(challenge);
   } catch (error) {
     res.status(500).json({ message: "Server Error" });
+  }
+};
+
+exports.getAvailableChallenges = async (req, res) => {
+  const userId = getUserId(req);
+  try {
+    const challenges = await Challenge.find({ userId: { $ne: userId }, 
+      "participants.userId": { $nin: [userId] } });
+    res.json({ success: true, challenges });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+exports.joinChallenge = async (req, res) => {
+  const challengeId = req.params.challengeId;
+  const userId = getUserId(req); // Assuming these are passed from the frontend
+
+  try {
+    const challenge = await Challenge.findById(challengeId);
+
+    if (!challenge) {
+      return res.status(404).json({ success: false, message: "Challenge not found" });
+    }
+
+    // Check if the user is already a participant
+    const isAlreadyParticipant = challenge.participants.some(
+      (participant) => participant.userId === userId
+    );
+
+    if (isAlreadyParticipant) {
+      return res.status(400).json({ success: false, message: "User already joined this challenge" });
+    }
+
+    // Add the user with initial progress and completed status
+    challenge.participants.push({
+      userId,
+      progress: 0, // Start with 0 progress
+      completed: false, // Not completed initially
+    });
+
+    await challenge.save();
+
+    res.json({ success: true, message: "Joined challenge successfully", challenge });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 };
 

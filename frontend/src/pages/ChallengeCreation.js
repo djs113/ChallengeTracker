@@ -18,6 +18,34 @@ const ChallengeCreation = () => {
   const [success, setSuccess] = useState(null);
   const [error, setError] = useState(null);
 
+  const validateForm = (formData) => {
+    const errors = {};
+
+    // Date validation
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const startDate = new Date(formData.startDate);
+    startDate.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(formData.endDate);
+
+    if (!formData.startDate) {
+      errors.startDate = "Start date is required.";
+    } else if (startDate < today) {
+      errors.startDate = "Start date cannot be in the past.";
+    }
+
+    if (!formData.endDate) {
+      errors.endDate = "End date is required.";
+    } else if (endDate <= startDate) {
+      errors.endDate = "End date must be after the start date.";
+    }
+
+    return errors;
+  };
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -29,17 +57,25 @@ const ChallengeCreation = () => {
     setSuccess(null);
     setError(null);
 
+    const errors = validateForm(formData);
+
+    if (Object.keys(errors).length > 0) {
+    setLoading(false);
+    alert(Object.values(errors).join("\n")); // Show errors as alert
+    return;
+  }
+
     const token = localStorage.getItem("token");
 
     try {
       
-      await axios.post("http://localhost:5000/api/challenges/createChallenge", formData, {
+      await axios.post("http://localhost:5000/api/challenges/createChallenge", { ...formData, progress: 0, userId: token }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       setSuccess("Challenge created successfully!");
-      setFormData({ title: "", description: "", startDate: "", endDate: "", goal: "", duration: 0, difficultyLevel: "", progressTracking: "Manual"});
+      setFormData({ title: "", description: "", startDate: "", endDate: "", goal: "", duration: 0, difficultyLevel: "", progressTracking: "", progress: 0 });
     } catch (err) {
       setError("Failed to create challenge. Please try again.");
     } finally {
@@ -124,7 +160,7 @@ const ChallengeCreation = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-red-500 text-white px-4 py-2 rounded"
         >
           {loading ? "Creating..." : "Create Challenge"}
         </button>
