@@ -10,6 +10,13 @@ const ChallengeSchema = new mongoose.Schema({
   progress: { type: Number, required: true },
   progressTracking: { type: String, enum: ["Automatic", "Manual"], required: true },
   difficultyLevel: { type: String, enum: ["Easy", "Medium", "Hard"], required: true },
+  participants: [
+  {
+    userId: { type: String, ref: "User" },
+    progress: { type: Number, default: 0 },
+    completed: { type: Boolean, default: false }
+  }
+],
   userId: { type: String, required: true },
 });
 

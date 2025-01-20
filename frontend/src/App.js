@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
+import Home1 from "./pages/Home1";
 import NotFound from "./pages/NotFound";
 import ChallengeCreation from "./pages/ChallengeCreation";
 import RegisterPage from "./pages/RegisterPage";
@@ -12,22 +13,22 @@ import LogoutPage from "./pages/LogoutPage";
 import ChallengeDetailsPage from "./pages/ChallengeDetailsPage";
 import JoinChallengesPage from "./pages/JoinChallengesPage";
 
-
 // Import AuthProvider
 import { AuthProvider } from "./context/AuthContext";  
 import ChallengeList from "./components/ChallengeList";
+
 
 function App() { // Run only once on page load
   return (
     <AuthProvider> 
       <Router>
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-screen"  >
           <Header />
-          <div className="flex flex-grow">
+          <div className="flex flex-grow"  >
             <Sidebar />
-            <main className="flex-grow p-4">
+            <main className="flex-grow p-4" >
               <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<Home1 />} />
                 <Route path="/create-challenge" element={<ChallengeCreation />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/register" element={<RegisterPage />} />
@@ -36,7 +37,7 @@ function App() { // Run only once on page load
                 <Route path="/get-challenges" element={<ChallengeList />} />
                 <Route path="/challenges/:id" element={<ChallengeDetailsPage />} />
                 <Route path="/challenges/getAvailableChallenges" element={<JoinChallengesPage />} />
-              </Routes>
+               </Routes>
             </main>
           </div>
           <Footer />

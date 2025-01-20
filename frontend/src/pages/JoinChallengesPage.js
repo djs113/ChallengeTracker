@@ -38,6 +38,12 @@ const JoinChallengesPage = () => {
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">Join a Challenge</h2>
       {message && <p className="text-green-500 mb-4">{message}</p>}
+      {challenges.length === 0 ? (
+          <p>No challenges available.</p>
+        ) : (
+          null
+        )
+        }
       <ul>
         {challenges.map((challenge) => (
           <li key={challenge._id} className="border p-4 mb-4">
@@ -47,7 +53,7 @@ const JoinChallengesPage = () => {
             <p>Difficulty: {challenge.difficultyLevel}</p>
             <button
               onClick={() => joinChallenge(challenge._id)}
-              className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              className="mt-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
             >
               Join Challenge
             </button>

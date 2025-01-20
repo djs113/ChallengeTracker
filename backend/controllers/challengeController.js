@@ -67,7 +67,8 @@ exports.getChallengeById = async (req, res) => {
 exports.getAvailableChallenges = async (req, res) => {
   const userId = getUserId(req);
   try {
-    const challenges = await Challenge.find({ userId: { $ne: userId } });
+    const challenges = await Challenge.find({ userId: { $ne: userId }, 
+      "participants.userId": { $nin: [userId] } });
     res.json({ success: true, challenges });
   } catch (error) {
     console.error(error);

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import AuthContext from '../context/AuthContext';
 import API from '../utils/api';
 
 const Sidebar = () => {
@@ -40,9 +39,6 @@ const Sidebar = () => {
                 <li>
                     <Link to="/" className="text-red-500">Home</Link>
                 </li>
-                <li>
-                    <Link to="/challenges" className="text-red-500">Challenges</Link>
-                </li>
                 {isLoggedIn ? (
                     <>
                         <li>
@@ -57,7 +53,6 @@ const Sidebar = () => {
                         <li>
                             <Link to="/challenges/getAvailableChallenges" className="text-red-500">Join Challenges</Link>
                         </li>
-                        
                     </>
                 ) : (
                     <>

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import API from "../utils/api";
 import { Link } from "react-router-dom";
 
-
 const ChallengeList = () => {
   const [challenges, setChallenges] = useState([]);
+  const [error, setError] = useState("");
   const token = localStorage.getItem("token");
 
   useEffect(() => {
