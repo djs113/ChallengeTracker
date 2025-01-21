@@ -12,6 +12,7 @@ import LoginPage from "./pages/LoginPage";
 import LogoutPage from "./pages/LogoutPage";
 import ChallengeDetailsPage from "./pages/ChallengeDetailsPage";
 import JoinChallengesPage from "./pages/JoinChallengesPage";
+import CompletedChallengesList from "./components/CompletedChallengesList";
 
 // Import AuthProvider
 import { AuthProvider } from "./context/AuthContext";  
@@ -37,6 +38,7 @@ function App() { // Run only once on page load
                 <Route path="/get-challenges" element={<ChallengeList />} />
                 <Route path="/challenges/:id" element={<ChallengeDetailsPage />} />
                 <Route path="/challenges/getAvailableChallenges" element={<JoinChallengesPage />} />
+                <Route path="/challenges/getCompletedChallenges" element={<CompletedChallengesList />} />
                </Routes>
             </main>
           </div>

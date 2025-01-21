@@ -53,6 +53,8 @@ const ChallengeDetailsPage = () => {
     try {
       const response = await API.put(`/challenges/${id}/progress`);
       if (response.data.message) {
+        setProgress(response.data.challenge.progress);
+        setChallenge(response.data.challenge);
         alert(response.data.message);
       } else {
         setProgress(response.data.progress);
