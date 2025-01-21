@@ -56,6 +56,9 @@ const Sidebar = () => {
                         <li>
                             <Link to="/challenges/getCompletedChallenges" className="text-red-500">Completed Challenges</Link>
                         </li>
+                        <li>
+                            <Link to="/challenges/getJoinedChallenges" className="text-red-500">Joined Challenges</Link>
+                        </li>
                     </>
                 ) : (
                     <>

@@ -14,6 +14,7 @@ const ChallengeSchema = new mongoose.Schema({
   participants: [
   {
     userId: { type: String, ref: "User" },
+    userName: { type: String, required: true },
     progress: { type: Number, default: 0 },
     completed: { type: Boolean, default: false }
   }

@@ -44,10 +44,9 @@ const ChallengeDetailsPage = () => {
   }
   
   // Calculate progress percentage
-  const progressPercentage = Math.min(
-    (progress / challenge.duration) * 100,
-    100
-  );
+  const progressPercentage = (progress) => {
+    return Math.min((progress / challenge.duration) * 100, 100);
+  };
 
   const incrementProgress = async () => {
     try {
@@ -80,9 +79,9 @@ const ChallengeDetailsPage = () => {
     <div className="w-full bg-gray-300 rounded-full h-6 overflow-hidden">
       <div
         className="bg-blue-500 h-full text-center text-white"
-        style={{ width: `${progressPercentage}%` }}
+        style={{ width: `${progressPercentage(progress)}%` }}
       >
-        {progressPercentage.toFixed(1)}%
+        {progressPercentage(progress).toFixed(1)}%
       </div>
     </div>
     { challenge.progressTracking === "Manual" ? (
@@ -103,8 +102,26 @@ const ChallengeDetailsPage = () => {
             className="mt-4 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
           >
             Delete Challenge
-      </button>
-    
+    </button>
+    <br></br>
+    {challenge.participants.length > 0 ? (
+
+      challenge.participants.map((participant) => (
+        <>
+        <h2 className="text-xl font-bold mt-4">{participant.userName}</h2>
+        <div className="w-full bg-gray-300 rounded-full h-6 overflow-hidden">
+          <div
+            className="bg-blue-500 h-full text-center text-white"
+            style={{ width: `${progressPercentage(participant.progress)}%` }}
+          >
+            {progressPercentage(participant.progress).toFixed(1)}%
+          </div>
+        </div>
+        </>
+        )
+      )
+    ) : null
+    } 
     </>
   );
 };

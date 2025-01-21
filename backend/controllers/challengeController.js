@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require('dotenv');
 
 const Challenge = require("../models/Challenge");
+const User = require("../models/User");
 
 const getUserId = (req) => {
   const authHeader = req.headers['authorization'];
@@ -38,7 +39,6 @@ exports.getChallenges = async (req, res) => {
 
 exports.getCompletedChallenges = async (req, res) => {
   try {
-    const userId = getUserId(req);
     const challenges = await Challenge.find({ completed: true });
     res.json({ success: true, data: challenges });
   } catch (error) {
@@ -91,6 +91,8 @@ exports.joinChallenge = async (req, res) => {
   const challengeId = req.params.challengeId;
   const userId = getUserId(req); // Assuming these are passed from the frontend
 
+  const user = await User.findById(userId);
+
   try {
     const challenge = await Challenge.findById(challengeId);
 
@@ -110,6 +112,7 @@ exports.joinChallenge = async (req, res) => {
     // Add the user with initial progress and completed status
     challenge.participants.push({
       userId,
+      userName: user.name,
       progress: 0, // Start with 0 progress
       completed: false, // Not completed initially
     });

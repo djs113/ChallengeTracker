@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const { createChallenge, getChallenges, getChallengeById, updateChallengeProgress, deleteChallenge, joinChallenge, getAvailableChallenges, getCompletedChallenges } = require("../controllers/challengeController");
+const { createChallenge, getChallenges, getChallengeById, updateChallengeProgress, 
+    deleteChallenge, joinChallenge, getAvailableChallenges,
+     getCompletedChallenges, getJoinedChallenges } = require("../controllers/challengeController");
 const { protect } = require("../middleware/authMiddleware");
 
 router.post('/createChallenge', protect, createChallenge);

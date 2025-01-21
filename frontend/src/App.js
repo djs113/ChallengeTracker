@@ -39,7 +39,7 @@ function App() { // Run only once on page load
                 <Route path="/challenges/:id" element={<ChallengeDetailsPage />} />
                 <Route path="/challenges/getAvailableChallenges" element={<JoinChallengesPage />} />
                 <Route path="/challenges/getCompletedChallenges" element={<CompletedChallengesList />} />
-               </Routes>
+                </Routes>
             </main>
           </div>
           <Footer />
