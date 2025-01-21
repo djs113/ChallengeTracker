@@ -2,6 +2,7 @@ const jwt = require("jsonwebtoken");
 const dotenv = require('dotenv');
 
 const Challenge = require("../models/Challenge");
+const User = require("../models/User");
 
 const getUserId = (req) => {
   const authHeader = req.headers['authorization'];
@@ -29,7 +30,16 @@ exports.createChallenge = async (req, res) => {
 exports.getChallenges = async (req, res) => {
   try {
     const userId = getUserId(req);
-    const challenges = await Challenge.find({ userId });
+    const challenges = await Challenge.find({ userId, completed: false });
+    res.json({ success: true, data: challenges });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+};
+
+exports.getCompletedChallenges = async (req, res) => {
+  try {
+    const challenges = await Challenge.find({ completed: true });
     res.json({ success: true, data: challenges });
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -68,7 +78,8 @@ exports.getAvailableChallenges = async (req, res) => {
   const userId = getUserId(req);
   try {
     const challenges = await Challenge.find({ userId: { $ne: userId }, 
-      "participants.userId": { $nin: [userId] } });
+      "participants.userId": { $nin: [userId] }, 
+      completed: false});
     res.json({ success: true, challenges });
   } catch (error) {
     console.error(error);
@@ -79,6 +90,8 @@ exports.getAvailableChallenges = async (req, res) => {
 exports.joinChallenge = async (req, res) => {
   const challengeId = req.params.challengeId;
   const userId = getUserId(req); // Assuming these are passed from the frontend
+
+  const user = await User.findById(userId);
 
   try {
     const challenge = await Challenge.findById(challengeId);
@@ -99,6 +112,7 @@ exports.joinChallenge = async (req, res) => {
     // Add the user with initial progress and completed status
     challenge.participants.push({
       userId,
+      userName: user.name,
       progress: 0, // Start with 0 progress
       completed: false, // Not completed initially
     });
@@ -120,12 +134,20 @@ exports.updateChallengeProgress = async (req, res) => {
     throw new Error("Challenge not found");
   }
 
-  // Increment progress by 1 day
-  if (challenge.progress >= challenge.duration) {
-    return res.status(200).json({ message: "Challenge already completed" });
+  if (!challenge.completed) {
+    challenge.progress = challenge.progress + 1;
+    await challenge.save();
+
+    if (challenge.progress == challenge.duration) {
+      challenge.completed = true;
+      await challenge.save();
+    } 
+  } else {
+      return res.status(200).json({ challenge, message: "Challenge already completed" });
   }
-  challenge.progress = challenge.progress + 1;
-  await challenge.save();
+  // Increment progress by 1 day
+  
+  ;
 
   res.status(200).json(challenge);
 };

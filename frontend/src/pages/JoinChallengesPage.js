@@ -35,7 +35,7 @@ const JoinChallengesPage = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 bg-white shadow-md rounded-md">
       <h2 className="text-2xl font-bold mb-4">Join a Challenge</h2>
       {message && <p className="text-green-500 mb-4">{message}</p>}
       {challenges.length === 0 ? (
