@@ -25,7 +25,7 @@ const ChallengeList = () => {
 
   return (
     <div className="p-4 bg-white shadow-md rounded-md">
-      <h2 className="text-2xl font-bold mb-4">Available Challenges</h2>
+      <h2 className="text-2xl font-bold mb-4">Completed Challenges</h2>
       {challenges.length === 0 ? (
         <p>No challenges available.</p>
       ) : (
